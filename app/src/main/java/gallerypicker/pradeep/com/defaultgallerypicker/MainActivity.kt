@@ -80,12 +80,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     @SuppressLint("NewApi")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (data!!.clipData != null && data.clipData!!.itemCount != 0) {
-            for (i in 0 until data.clipData!!.itemCount) {
-                mediaPath.setText(RealPathUtils.getRealPath(this, data.clipData!!.getItemAt(i).uri))
+        when (requestCode) {
+            SELECT_MEDIA -> {
+                if (data!!.clipData != null && data.clipData!!.itemCount != 0) {
+                    for (i in 0 until data.clipData!!.itemCount) {
+                        mediaPath.setText(RealPathUtils.getRealPath(this, data.clipData!!.getItemAt(i).uri))
+                    }
+                } else if (data.getData() != null) {
+                    mediaPath.setText(RealPathUtils.getRealPath(this, data.getData()))
+                }
             }
-        } else if (data.getData() != null) {
-            mediaPath.setText(RealPathUtils.getRealPath(this, data.getData()))
         }
     }
 
